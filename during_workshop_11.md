@@ -6,13 +6,13 @@ AcmeSub are a company who create subtitles for films. They wish to automate the 
 
 ## Part 1 - Load Testing
 
-First of all we will investigate how well an application behaves under load when it is not **elastic** or **scalable**. For this exercise we will use a Python application that has one HTTP endpoint. This endpoint, see [/initialApp/app.py](/initialApp/app.py), will just wait for 5 seconds when it is called, this is to simulate the time it will take to do the actual processing that AcmeSub will require in the future.
+First of all we will investigate how well an application behaves under load when it is not *elastic* or *scalable*. For this exercise we will use a Python application that has one HTTP endpoint. This endpoint, see [/initialApp/app.py](/initialApp/app.py), will just wait for 5 seconds when it is called, this is to simulate the time it will take to do the actual processing that AcmeSub will require in the future.
 
   1. Navigate to the application's folder: `cd ./initialApp/` 
   2. Install requirements: `pip install -r requirements.txt`
   3. Run the app: `python -m flask run`
 
-We will host this application in a non-scalable way, which we can then perform **load testing** against.
+We will host this application in a non-scalable way, which we can then perform *load testing* against.
 > The ideal demonstration of an outdated, non-scalable deployment would be via VMs, but these cost money, so for the purposes of this exercise we'll be using Azure App Service with scalability turned off, as this is available on the free service plan.
 
 In the same folder as above:
@@ -63,3 +63,61 @@ If you go to the 'Timeline Report' tab you can select to see the average respons
 
 To try and solve the problems that the application experiences under load we are going to convert our application to one that runs in a Serverless Environment, using Azure Functions.
 
+### Step 1
+
+The first thing to do is to create a local function project. In Azure Functions, a function project is a container for one or more individual functions. To do this we will use Azure Functions Core Tools, that you installed in the prerequisites to this workshop.
+
+```
+func init AcmeSubProject --python
+```
+
+This will create a new folder called `AcmeSubProject`, which you will want to navigate into.
+
+```
+cd AcmeSubProject
+```
+
+Next, we want to create a function that will be triggered by an HTTP request, so we will use the 'HTTP trigger' template.
+
+```
+func new --name HttpEndpoint --template "HTTP trigger" --authlevel "anonymous"
+```
+
+This creates a new subfolder, containing the code for this function:
+
+#### function.json
+
+``` JSON
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "authLevel": "Anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    }
+  ]
+}
+```
+
+This is a configuration file that defines the *trigger* and *bindings* for the function.
+
+*Triggers* are what causes a function to run, like an HTTP Request or a Timer. They have associated data, that can be passed into the function as a parameter. In the above instance the HTTP Trigger passes in its data as a parameter named `req`. Every Azure Function has exactly one trigger, with a trigger effectively being a special sort of *input binding*.
+
+ A *binding* is how functions are connected to other resources and can be either an *input binding* or an *output binding*. Input bindings receive data from a data source, and pass it into the function as parameters. Output bindings take data from the function and send it to another resource, for example returning an HTTP request or creating a message in a Queue.
+
+ Bindings prevent you from needing to hardcode access to other services within the function itself, they are declared in this JSON file.
+
+ The `scriptFile` property declares the name of the function that will be run.
+
+ #### __init__.py
