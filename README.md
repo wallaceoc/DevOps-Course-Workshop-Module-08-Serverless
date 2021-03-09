@@ -16,3 +16,4 @@ Also, make sure you have installed the following:
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)
   * Version 3.6 or up; check this by running `python --version`
+* [Postman](https://www.postman.com/downloads/)

@@ -2,7 +2,7 @@
 
 Before starting make sure you have addressed the prerequisites in the [README.md](README.md)
 
-AcmeSub are a company who create subtitles for films. They wish to automate the process of transcribing audio and translating it to the different languages they support. As this processing will take time, they are worried about how well the system will hold up when under heavy load. They have approached you to help them investigate the best infrastructure for this task.
+AcmeSub are a company who create subtitles for films. They wish to automate the process of  translating their subtitles to the different languages they support. As this processing will take time, they are worried about how well the system will hold up when under heavy load. They have approached you to help them investigate the best infrastructure for this task.
 
 ## Part 1 - Load Testing
 
@@ -160,28 +160,44 @@ Before we worry about hosting the function on Azure itself we are going to test 
 - Towards the end of the output it should give you a URL. Copy this into a browser and append the query string `?name=<YOUR_NAME>` (so the full URL looks something like `http://localhost:7071/HttpEndpoint?name=Alice`)
 - You should hopefully see a message returned from the function
 
-Now that we have it running locally, we want to replace the code in the default function with the dummy code that we are using in our existing application. Change \_\_init\_\_.py to look like the following, and then run it as above:
+Now that we have it running locally, we want to replace the code in the default function with something similar to the dummy code that we are using in our existing application. However, we will change it so we can send the text that we want to translate to it. Change \_\_init\_\_.py to look like the following:
 
 ``` Python
-import logging
 import time
 import azure.functions as func
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
     start = time.time()
+
+    req_body = req.get_json()
+    subtitle = req_body.get("subtitle")
+
     time.sleep(5) # Simulating 5 seconds of cpu-intensive processing
     end = time.time()
     processingTime = end - start
+
     return func.HttpResponse(
-        "Processing took " + str(processingTime)  + " seconds",
+        f"Processing took {str(processingTime)} seconds. Translation is: {subtitle}",
         status_code=200
     )
 
 ```
 
-You should again, like with the initial application, have to wait a few seconds before receiving a reply in your browser.
+Once you've updated the code, you can run `func start` again to run the new version.
+
+The function now expects us to send a JSON object to it containing the subtitle to translate, so instead of using the browser to test it, we will use Postman. Open up Postman and select to create a new request (File > New...). 
+- Set the URL to the URL returned by `func start` command
+- Under the 'Body' tab, select 'raw' and change the 'Text' dropdown to read 'JSON'
+- In the textbox input the following JSON:
+```
+{
+    "subtitle": "It was a bright cold day in April, and the clocks were striking thirteen."
+}
+- Hit 'Send'
+```
+
+![Postman](/images/Postman-SendRequest.png) 
 
 ### Step 2 - Hosting on Azure
 
@@ -217,13 +233,13 @@ func azure functionapp publish <APP_NAME>
 ```
 >Replace `<APP_NAME>` with the name you chose above for your Function App. Make sure you're in the root directory of the local function project (`AcmeSubProject`) when running the above command
 
-As when running locally, the command should output a URL, that you can copy into a browser to test out your Azure Function.
+As when running locally, the command should output a URL. You can use this URL in Postman to send a request to the function (don't forget to send the JSON object, as before!).
 
 Now that you have your Azure Function setup, you can have a look at the resources you have created in the Azure Portal, by logging into https://portal.azure.com/ and selecting 'All Resources' from the menu in the top left corner.
 
 ### Step 3 - Load testing Azure Function
 
-To test whether moving to a new cloud-based, elastic, serverless environment has improved performance when under load we should repeat the load testing we did with BlazeMeter, but this time using the URL for the Azure Function app you have just created.
+To test whether moving to a new cloud-based, elastic, serverless environment has improved performance when under load we should repeat the load testing we did with BlazeMeter, but this time using the URL for the Azure Function app you have just created. When setting the URL, you will also have to remember to pass in the JSON object your request is now expecting.
 
 Hopefully, you should see three things:
 
@@ -233,7 +249,16 @@ Hopefully, you should see three things:
 
 - There should (hopefully) be no errors, as there are no timeouts, as all requests are being handled in a timely manner.
 
-## Part 3 - Integrating with Blob Storage
+## Part 3 - Integrating with Azure Cosmos DB
+
+AcmeSub have been in touch, instead of the application returning the output of the translations, they would like us to instead save them to some storage that they can access later.
+
+For the moment we want to just focus on the infrastructure, so we will keep using our function from Part 2, however, instead of returning the text, we want to save it somewhere.
+
+We're going to save the translations into Azure Cosmos DB, a cloud-hosted NoSQL database. Cosmos DB provides various APIs, we will use the SQL interface, as Azure Functions directly supports this.
+
+
+
 
 
 ## Part 4 - Using Messaging Queues and Multiple Functions
