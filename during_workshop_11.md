@@ -219,7 +219,19 @@ func azure functionapp publish <APP_NAME>
 
 As when running locally, the command should output a URL, that you can copy into a browser to test out your Azure Function.
 
+Now that you have your Azure Function setup, you can have a look at the resources you have created in the Azure Portal, by logging into https://portal.azure.com/ and selecting 'All Resources' from the menu in the top left corner.
 
+### Step 3 - Load testing Azure Function
+
+To test whether moving to a new cloud-based, elastic, serverless environment has improved performance when under load we should repeat the load testing we did with BlazeMeter, but this time using the URL for the Azure Function app you have just created.
+
+Hopefully, you should see three things:
+
+- The average response time has been reduced. This is still higher than the 5 seconds that the function itself takes to run, this is due to there being an overhead as more instances of your function gets created, to handle the load.
+
+- The response time does not increase dramatically when more users are added to the load test, as the Azure Functions is creating more instances of the function to handle the increased demand.
+
+- There should (hopefully) be no errors, as there are no timeouts, as all requests are being handled in a timely manner.
 
 ## Part 3 - Integrating with Blob Storage
 
@@ -228,4 +240,4 @@ As when running locally, the command should output a URL, that you can copy into
 
 ## Part 5 (Optional) - Transcribing and Translating using a PaaS
 
-## Part 6 (Optional)
+## Part 6 (Optional) - Using Serverless framework
