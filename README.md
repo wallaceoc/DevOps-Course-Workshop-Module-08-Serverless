@@ -12,6 +12,7 @@ Also, make sure you have installed the following:
 
 * [Visual Studio Code](https://code.visualstudio.com/download)
 * [Git](https://git-scm.com/)
+* [.NET 5.0 SDK](https://dotnet.microsoft.com/download)
 * [Azure Functions Core Tools version 3.x.](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-run-local#v2)
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)

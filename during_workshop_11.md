@@ -253,7 +253,7 @@ Hopefully, you should see three things:
 
 AcmeSub have been in touch, instead of processing the subtitles immediately, they would like us to instead save them to some storage that they can access later.
 
-For the moment we want to just focus on the infrastructure, so we will keep using our function from Part 2, however, instead of returning the text, we want to save it somewhere.
+For the moment we want to just focus on the infrastructure, so we will keep using our function from Part 2, but we will alter it to save the subtitles somewhere.
 
 ### Step 1 - Setting up Azure Table Storage
 
@@ -286,11 +286,73 @@ To run the function locally you will need to run the command `func azure functio
 
 You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
+## Part 4 - Using Event Grid
 
+AcmeSub need to be able to translate their subtitles into multiple different languages. One way we could architect this is to kick off an Azure function instance per language. To help us achieve this we are going to be using Azure Event Grid.
 
+The way we want the application to work is:
+1. Azure Function _A_ receives an HTTP Request containing the subtitle and the languages to translate the subtitle into.
+2. Function _A_ saves the subtitle to Azure Table storage
+3. Function _A_ sends out an _event_ per language, this event contains the location of the subtitle in Azure Table storage and the language to translate it to.
+4. Function _B_ receives an event from Function A. It will use the information in the event to retrieve the subtitle from Azure Table Storage.
+5. Function _B_ will process this subtitle, based on the language contained in the event.
+6. Function _B_ will save the processed subtitle into a different table in Azure Table storage.
 
+As you can see, our existing Azure Function acts very closely to how Function _A_ needs to behave, so we will tweak that one and then create a new function for Function _B_.
 
-## Part 4 - Using Messaging Queues and Multiple Functions
+### Step 1 - Setup Event Grid
+
+Azure Event Grid lets us _publish_ events to a _topic_. We can then _subscribe_ to a _topic_ to receive those events elsewhere.
+
+We'll first of all create a topic in the existing resource group:
+
+```
+az eventgrid topic create --resource-group AcmeSubResources --name SubtitleAdded --location ukwest
+```
+
+To publish events to a topic we need to know the address of the topic endpoint and we must also have the key. You can get these by running the following commands:
+```
+az eventgrid topic show --name SubtitleAdded -g AcmeSubResources --query "endpoint"
+```
+```
+az eventgrid topic key list --name SubtitleAdded -g AcmeSubResources --query "key1"
+```
+
+You now need to tell Azure Functions about these two values. In the root directory of your `AcmeSubProject` function app there will be a _local.settings.json_ file. You will want to add two new properties under the `Values` property containing these. That file should end up looking something like:
+
+``` JSON
+{
+  "IsEncrypted": false,
+  "Values": {
+    "SubtitleAddedEndpoint": "<ENDPOINT>",
+    "SubtitleAddedKey": "<KEY>",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    // OTHER VALUES
+  },
+  "ConnectionStrings": {}
+}
+```
+
+Your functions will now have access to those values when running locally, however you'll need to publish the settings for them to be available when running your functions on Azure. To publish your settings run:
+
+```
+func azure functionapp publish <function-app-name> --publish-settings-only
+```
+
+### Step 2 - Sending events
+
+We now want to change our existing _HttpEndpoint_ function to send events to the Event Grid topic. To do so you will need to:
+
+1. Change the JSON that you send in the HTTP request to include the language codes for the subtitle to be translated to. For example:
+
+``` JSON
+{
+    "subtitle": "It was a bright cold day in April, and the clocks were striking thirteen.",
+    "languages": ["it", "de"]
+}
+```
+
+2. 
 
 ## Part 5 (Optional) - Transcribing and Translating using a PaaS
 
