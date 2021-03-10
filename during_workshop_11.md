@@ -115,9 +115,9 @@ This is a configuration file that defines the *trigger* and *bindings* for the f
 
 *Triggers* are what causes a function to run, like an HTTP Request or a Timer. They have associated data, that can be passed into the function as a parameter. In the above instance the HTTP Trigger passes in its data as a parameter named `req`. Every Azure Function has exactly one trigger, with a trigger effectively being a special sort of *input binding*.
 
- A *binding* is how functions are connected to other resources and can be either an *input binding* or an *output binding*. Input bindings receive data from a data source and pass it into the function as parameters. Output bindings take data from the function and send it to another resource, for example returning an HTTP response or creating a message in a Message Queue.
+ A *binding* is how a function is connected to another resource and they can be either an *input binding* or an *output binding*. Input bindings receive data from a data source and pass it into the function as parameters. Output bindings take data from the function and send it to another resource, for example returning an HTTP response or creating a message in a Message Queue.
 
- Bindings prevent you from needing to hardcode access to other services within the function itself, they are declared in this JSON file.
+ Bindings prevent you from needing to hardcode access to other services within the function itself, they are declared in this JSON file. A function can have zero or many input and/or output bindings.
 
  The `scriptFile` property declares the name of the function that will be run.
 
@@ -249,13 +249,42 @@ Hopefully, you should see three things:
 
 - There should (hopefully) be no errors, as there are no timeouts, as all requests are being handled in a timely manner.
 
-## Part 3 - Integrating with Azure Cosmos DB
+## Part 3 - Integrating with Azure Table Storage
 
-AcmeSub have been in touch, instead of the application returning the output of the translations, they would like us to instead save them to some storage that they can access later.
+AcmeSub have been in touch, instead of processing the subtitles immediately, they would like us to instead save them to some storage that they can access later.
 
 For the moment we want to just focus on the infrastructure, so we will keep using our function from Part 2, however, instead of returning the text, we want to save it somewhere.
 
-We're going to save the translations into Azure Cosmos DB, a cloud-hosted NoSQL database. Cosmos DB provides various APIs, we will use the SQL interface, as Azure Functions directly supports this.
+### Step 1 - Setting up Azure Table Storage
+
+For this exercise, we're going to use Azure Table storage, which is a NoSQL datastore.
+
+```
+az storage table create --name AcmeTranslations --account-name <STORAGE_NAME>
+```
+> We will use the same Storage Account that we created previously, so replace `<STORAGE_NAME>` with the name you used in Part 2 Step 2.
+
+In the [Azure Portal](https://portal.azure.com/) you should now be able to find your created Table Storage:
+- Search for 'Storage accounts' in the top search bar
+- Select the storage account you are using for this workshop
+- Select 'Storage Explorer'
+- You should then be able to expand 'Tables' and select the table you just created
+- For now it should show no data
+
+### Step 2 - Binding to Azure Table Storage
+
+We now want to change our function so it saves the subtitle to the Azure Storage table that has just been created. To do this you will need to:
+
+1. Add a new binding definition to the _function.json_ file.
+2. Change your Python function to use the new binding.
+3. You can remove the `time.sleep(5)` line from your Python function at this point
+
+It is worth checking out the [Table Storage output binding documentation](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-table-output?tabs=python) to help you achieve this task.
+
+> As you are using the same Storage Account for your Azure Table Storage and for your Azure Functions App you do not need to set the `connection` property for the binding in _function.json_ as it will default to use the correct connection. 
+To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to make sure the local instance knows about the correct connection details.
+
+You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
 
 
