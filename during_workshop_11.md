@@ -346,6 +346,39 @@ If you run your function project locally you should be able to see in the logs y
 
 If you have a look at the queue in the Azure Portal, you should see that the queue has now been cleared, as the items have been processed.
 
+### Step 4 - Retrieve subtitle from Azure Table
+
+Ideally, we'd be able to retrieve the subtitle from Azure Table by using the input binding, unfortunately in the Python version there is no way (yet) to declare which row key you would like to retrieve from inside the Python function.
+
+Instead, we're going to use the [Azure SDK for Python](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-data-tables/12.0.0b5/index.html) to access Azure Table.
+
+1. Install the SDK dependency by adding the line `azure-data-tables` to the _requirements.txt_ file in the root of the function project. Then run:
+```
+pip install -r requirements.txt
+```
+2. In your function that reads the messages from the queue add the following imports:
+
+```
+import os
+from azure.data.tables import TableClient
+```
+
+3. We then need to create a `TableClient`. This needs to be told how to connect to Azure Table Storage, which we can do my getting the default connection from the environment variables:
+
+```
+connection_string = os.environ["AzureWebJobsStorage"]
+table_client = TableClient.from_connection_string(conn_str=connection_string, table_name="AcmeTranslations")
+```
+4. We can then retrieve the entity from Table storage, using the row key contained in the queue message, with code similar to:
+
+```
+entity = table_client.get_entity(partition_key="subtitle", row_key=row_key)
+```
+(You will need to set `partition_key` to be the same value you declared in the output binding in your HTTP Endpoint function)
+> You can extract the row key from the queue message using the `.split(":")` function
+
+5. Log the subtitle you have retrieved from Table Storage to ensure it is working correctly.
+
 ## Part 5 (Optional) - Transcribing and Translating using a PaaS
 
 ## Part 6 (Optional) - Using Serverless framework
