@@ -327,11 +327,24 @@ We now want to change our existing _HttpEndpoint_ function to send messages to t
 ```
 
 2. Add a Queue storage output binding.
-3. Using the binding, create a message per language, which contains the row key for the subtitle in Azure Table storage, and the language code.
+3. Using the binding, create a message per language, which contains the row key for the subtitle in Azure Table storage, and the language code. 
+
+> Messages in Queue storage are strings, for our purposes it is fine to concatenate the row key and the language code together, separated by a colon e.g. `de:50949d7f-9dcb-4991-8b64-49a8fe002f0b`
 
 Have a look at the [Queue storage output binding documentation](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-queue-output?tabs=python) to help you achieve this. Like with the Azure Table binding, you don't need to declare the `connection` property in _function.json_ as it will default to using the correct one, as the queue is setup in the same storage account as the function.
 
 If you are successful you should be able to see messages being created in the queue in the Azure portal.
+
+### Step 3 - Receive messages
+
+Next we want to add a new function to your function project that reads messages off the queue.
+
+1. [Create a new function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#create-func) that uses a [Queue Storage trigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=python). Make sure to set the binding to look at the correct queue by changing _function.json_ for the new function.
+2. For now you can print the contents of the message received to the logs.
+
+If you run your function project locally you should be able to see in the logs your queue items being processed by this new function, once you have sent a request to your HTTP endpoint function.
+
+If you have a look at the queue in the Azure Portal, you should see that the queue has now been cleared, as the items have been processed.
 
 ## Part 5 (Optional) - Transcribing and Translating using a PaaS
 
