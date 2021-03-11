@@ -163,11 +163,13 @@ Before we worry about hosting the function on Azure itself we are going to test 
 Now that we have it running locally, we want to replace the code in the default function with something similar to the dummy code that we are using in our existing application. However, we will change it so we can send the text that we want to translate to it. Change \_\_init\_\_.py to look like the following:
 
 ``` Python
+import logging
 import time
 import azure.functions as func
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('HTTP trigger function received a request.')
     start = time.time()
 
     req_body = req.get_json()
@@ -216,7 +218,7 @@ az group create --name AcmeSubResources --location ukwest
 ```
 az storage account create --name <STORAGE_NAME> --location ukwest --resource-group AcmeSubResources --sku Standard_LRS
 ```
-> (Replace `<STORAGE_NAME>` with the name you want to give this storage account, this must be unique across the whole of Azure Storage and contain 3 to 24 numbers or lowercase letters.)
+> Replace `<STORAGE_NAME>` with the name you want to give this storage account, this must be unique across the whole of Azure Storage and contain 3 to 24 numbers or lowercase letters. It is worth making a note of this name as you will use it later.
 
 - A _Function App_: This is the container for your function code within Azure, it can be thought of the Azure equivalent to your local function project.
 
@@ -231,7 +233,7 @@ Now that we have all the resources that we need, we can deploy to Azure.
 ```
 func azure functionapp publish <APP_NAME>
 ```
->Replace `<APP_NAME>` with the name you chose above for your Function App. Make sure you're in the root directory of the local function project (`AcmeSubProject`) when running the above command
+> Replace `<APP_NAME>` with the name you chose above for your Function App. Make sure you're in the root directory of the local function project (`AcmeSubProject`) when running the above command
 
 As when running locally, the command should output a URL. You can use this URL in Postman to send a request to the function (don't forget to send the JSON object, as before!).
 
@@ -286,62 +288,34 @@ To run the function locally you will need to run the command `func azure functio
 
 You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
-## Part 4 - Using Event Grid
+## Part 4 - Communicating between functions
 
-AcmeSub need to be able to translate their subtitles into multiple different languages. One way we could architect this is to kick off an Azure function instance per language. To help us achieve this we are going to be using Azure Event Grid.
+AcmeSub need to be able to translate their subtitles into multiple different languages. One way we could architect this is to have our initial function queue up a function instance per language to do the translation. To help us achieve this we are going to be using Azure Queue storage.
 
 The way we want the application to work is:
 1. Azure Function _A_ receives an HTTP Request containing the subtitle and the languages to translate the subtitle into.
 2. Function _A_ saves the subtitle to Azure Table storage
-3. Function _A_ sends out an _event_ per language, this event contains the location of the subtitle in Azure Table storage and the language to translate it to.
-4. Function _B_ receives an event from Function A. It will use the information in the event to retrieve the subtitle from Azure Table Storage.
-5. Function _B_ will process this subtitle, based on the language contained in the event.
+3. Function _A_ sends out a message per language, this message contains the location of the subtitle in Azure Table storage and the language to translate it to.
+4. Function _B_ reads the queue to get messages from Function A. It will use the information in the message to retrieve the subtitle from Azure Table Storage.
+5. Function _B_ will process this subtitle, based on the language contained in the message.
 6. Function _B_ will save the processed subtitle into a different table in Azure Table storage.
 
 As you can see, our existing Azure Function acts very closely to how Function _A_ needs to behave, so we will tweak that one and then create a new function for Function _B_.
 
-### Step 1 - Setup Event Grid
+### Step 1 - Setup Azure Queue Storage
 
-Azure Event Grid lets us _publish_ events to a _topic_. We can then _subscribe_ to a _topic_ to receive those events elsewhere.
-
-We'll first of all create a topic in the existing resource group:
+Azure Queue Storage lets us add messages to a queue, which can then be read from elsewhere. These messages are stored in an Azure Storage account, so we can use the one we have already setup previously when creating the queue:
 
 ```
-az eventgrid topic create --resource-group AcmeSubResources --name SubtitleAdded --location ukwest
+az storage queue create --name acmesub-translations-queue --account-name <STORAGE_ACCOUNT_NAME>
 ```
+> Where `<STORAGE_ACCOUNT_NAME>` is the name of the storage account you have setup previously.
 
-To publish events to a topic we need to know the address of the topic endpoint and we must also have the key. You can get these by running the following commands:
-```
-az eventgrid topic show --name SubtitleAdded -g AcmeSubResources --query "endpoint"
-```
-```
-az eventgrid topic key list --name SubtitleAdded -g AcmeSubResources --query "key1"
-```
+If you navigate to the _Storage Explorer_ in your Storage Account via the Azure Portal (as you did in Part 3) you should now be able to expand `QUEUES` to see your newly created queue.
 
-You now need to tell Azure Functions about these two values. In the root directory of your `AcmeSubProject` function app there will be a _local.settings.json_ file. You will want to add two new properties under the `Values` property containing these. That file should end up looking something like:
+### Step 2 - Sending messages
 
-``` JSON
-{
-  "IsEncrypted": false,
-  "Values": {
-    "SubtitleAddedEndpoint": "<ENDPOINT>",
-    "SubtitleAddedKey": "<KEY>",
-    "FUNCTIONS_WORKER_RUNTIME": "python",
-    // OTHER VALUES
-  },
-  "ConnectionStrings": {}
-}
-```
-
-Your functions will now have access to those values when running locally, however you'll need to publish the settings for them to be available when running your functions on Azure. To publish your settings run:
-
-```
-func azure functionapp publish <function-app-name> --publish-settings-only
-```
-
-### Step 2 - Sending events
-
-We now want to change our existing _HttpEndpoint_ function to send events to the Event Grid topic. To do so you will need to:
+We now want to change our existing _HttpEndpoint_ function to send messages to the queue. To do so you will need to:
 
 1. Change the JSON that you send in the HTTP request to include the language codes for the subtitle to be translated to. For example:
 
@@ -352,7 +326,12 @@ We now want to change our existing _HttpEndpoint_ function to send events to the
 }
 ```
 
-2. 
+2. Add a Queue storage output binding.
+3. Using the binding, create a message per language, which contains the row key for the subtitle in Azure Table storage, and the language code.
+
+Have a look at the [Queue storage output binding documentation](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-queue-output?tabs=python) to help you achieve this. Like with the Azure Table binding, you don't need to declare the `connection` property in _function.json_ as it will default to using the correct one, as the queue is setup in the same storage account as the function.
+
+If you are successful you should be able to see messages being created in the queue in the Azure portal.
 
 ## Part 5 (Optional) - Transcribing and Translating using a PaaS
 
