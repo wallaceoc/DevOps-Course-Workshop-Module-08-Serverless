@@ -17,7 +17,14 @@ We will host this application in a non-scalable way, which we can then perform *
 
 In the same folder as above:
  - Login to the Azure CLI: `az login`
- - Run the following command: `az webapp up --sku F1 --location ukwest --name <app-name>`
+ - Create a _Resource Group_ in Azure, this is a container for related resources.
+```
+az group create --name InitialAppResources --location ukwest
+```
+ - Create a Web App:
+ ```
+ az webapp up --sku F1 --location ukwest --name <app-name> --resource-group InitialAppResources
+ ```
    - `<app-name>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<app-name>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`.
  - The command should return the URL that the application is now hosted on. If you navigate to that URL in your browser it should take around 5 seconds before it loads with a message.
 
@@ -207,7 +214,7 @@ Now that you've got your function working locally we're going to get it running 
 
 Before the code can be deployed we need to create three resources in Azure, using the Azure CLI:
 
-- A _Resource Group_: This is a container for related resources.
+- A new  _Resource Group_:
 
 ```
 az group create --name AcmeSubResources --location ukwest
@@ -392,4 +399,16 @@ We now have a function that receives the language code and accesses the subtitle
 
 # At The End Of The Workshop
 
+It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
 
+In Azure you can delete a _resource group_ to delete all the resources contained within it.
+
+You can delete the two resource groups you created today [via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal#delete-resource-group), or you can run the following commands:
+
+```
+az group delete --name InitialAppResources --yes
+```
+
+```
+az group delete --name AcmeSubResources --yes
+```
