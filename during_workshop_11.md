@@ -379,6 +379,17 @@ entity = table_client.get_entity(partition_key="subtitle", row_key=row_key)
 
 5. Log the subtitle you have retrieved from Table Storage to ensure it is working correctly.
 
-## Part 5 (Optional) - Transcribing and Translating using a PaaS
+### Step 5 - Processing and storing output
 
-## Part 6 (Optional) - Using Serverless framework
+We now have a function that receives the language code and accesses the subtitle from Table storage. Next we want to process the subtitle and save the output into a different table within Table storage.
+
+1. Create a new table within Azure Table storage.
+2. Process the subtitle, for the moment we won't actually translate the subtitle, instead use the `upper()` method on strings to convert it to uppercase.
+3. Add an Azure Table output binding and save the processed subtitle, and the language code, to your new table.
+
+
+## Part 5 (Optional) - Translating using Azure Translator
+
+# At The End Of The Workshop
+
+
