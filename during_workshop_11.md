@@ -406,6 +406,31 @@ Have a look at the [documentation](https://docs.microsoft.com/en-us/azure/cognit
 
 Make sure the language codes you pass into your function are supported by Translator. You can see a [list of supported languages here.](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translate)
 
+## Part 6 (Optional) - Facial Recognition
+
+In this part we're going to create a new application, which will consist of:
+- A web app, hosted on Azure App Service, through which images can be uploaded
+- Azure Blob Storage, to store the images
+- A new Azure Function, which retrieves files from Blob Storage and calls the Azure Face API to perform facial recognition
+
+### Step 1 - Deploy image upload webapp
+
+Follow [this tutorial](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-upload-process-images?tabs=dotnet) to deploy a web app that allows you to upload images to Azure Blob Storage. You only need to complete part one of the tutorial series.
+
+> The web app is written in .NET, but you do not need to have any knowledge of .NET to complete the tutorial.
+
+### Step 2 - Create new Azure Functions app
+
+Create a new Python Azure Function App which contains a [Blob Storage Trigger](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-blob-trigger?tabs=python) to read in images as an input stream, when they are added to Blob Storage.
+
+### Step 3 - Using the Azure Face API
+
+Now that we have the image as an input stream within our function, we want to send it to the Azure Face API to detect any faces within the image. You can do so by [following this tutorial](https://docs.microsoft.com/en-gb/azure/cognitive-services/face/quickstarts/client-libraries?tabs=visual-studio&pivots=programming-language-python), with a couple of changes:
+
+- Use your Python Azure Function, instead of creating a new Python application.
+- Instead of calling `face_client.face.detect_with_url`, you can use [`face_client.face.detect_with_stream`](https://docs.microsoft.com/en-gb/azure/cognitive-services/face/quickstarts/client-libraries?tabs=visual-studio&pivots=programming-language-python), as you have the stream from Blob Storage.
+
+
 # At The End Of The Workshop
 
 It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
