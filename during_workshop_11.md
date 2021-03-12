@@ -398,6 +398,14 @@ We now have a function that receives the language code and accesses the subtitle
 
 ## Part 5 (Optional) - Translating using Azure Translator
 
+Now that we have the architecture in place, we're going to do the actual translation, instead of calling `upper()`. To do so we're going to use another cloud-based service - Azure Translator.
+
+Translator doesn't have any function bindings, so instead you can call the service via REST from within your function.
+
+Have a look at the [documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/quickstart-translator?tabs=python) for how to integrate with Translator.
+
+Make sure the language codes you pass into your function are supported by Translator. You can see a [list of supported languages here.](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support#translate)
+
 # At The End Of The Workshop
 
 It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
