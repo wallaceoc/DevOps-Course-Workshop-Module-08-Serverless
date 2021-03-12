@@ -43,7 +43,7 @@ Now that we have the application running, we're going to use an online service, 
 
   ![URL For Request](/images/BlazeMeter/BlazeMeter-UrlEntered.png)
 
-  5. Under 'Load Configuration' we can then set how many users will be used in this performance testing (i.e. how many clients will be requesting from the API simultaneously), how long the load test lasts for and how quickly users are added. Choose the following settings:
+  5. Under 'Load Configuration' we can then set how many users will be used in this performance testing (i.e. how many clients will be requesting from the API simultaneously), how long the load test lasts for and how quickly users are added. We want to show how increasing the number of users affects the response time, so choose the following settings:
     - Total Users: 50
     - Duration: 5 minutes
     - Ramp up Time: 4 minutes
@@ -51,7 +51,7 @@ Now that we have the application running, we're going to use an online service, 
 
   ![Load Configuration](/images/BlazeMeter/BlazeMeter-LoadConfiguration.png) 
 
-  6. The 'Load Configuration' lets you set where the requests will originate from. This doesn't matter too much to us, so just select one that is in the UK, as that is where our application is hosted.
+  6. The 'Load Distribution' lets you set where the requests will originate from. This doesn't matter too much to us, so just select one that is in the UK, as that is where our application is hosted.
 
   ![Load Distribution](/images/BlazeMeter/BlazeMeter-LoadDistribution.png) 
 
@@ -203,8 +203,9 @@ The function now expects us to send a JSON object to it containing the subtitle 
 {
     "subtitle": "It was a bright cold day in April, and the clocks were striking thirteen."
 }
-- Hit 'Send'
 ```
+- Hit 'Send'
+
 
 ![Postman](/images/Postman-SendRequest.png) 
 

@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def day():
+def process():
     start = time.time()
     time.sleep(5) # Simulating 5 seconds of cpu-intensive processing
     end = time.time()
