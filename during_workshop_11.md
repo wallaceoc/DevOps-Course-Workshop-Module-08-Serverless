@@ -404,6 +404,19 @@ Follow [this tutorial](https://docs.microsoft.com/en-us/azure/storage/blobs/stor
 
 Create a new Python Azure Function App which contains a [Blob Storage Trigger](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-blob-trigger?tabs=python) to read in images as an input stream, when they are added to Blob Storage.
 
+Currently, Azure does not support having a Linux app and a Windows app in the same resource group so you will have to create a new resource group for your new function app. 
+
+As your blob storage will be in a separate resource group from your function app you cannot rely on the connection to it to be automatically populated in your function app. To allow a connection you need to do the following, once you have created the function app through the CLI:
+
+- [Get the connection string for the Azure Storage Account that contains your images.](https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az_storage_account_show_connection_string)
+> It is important to keep your connection string safe, as it can be used to access anything in your storage account. For that reason do not commit it to Git or share it in a publicly accessible place.
+- [Add your connection string as an application setting in your function app.](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=azurecli)
+- Download your application settings so when you run your function locally it will have access to the storage account:
+```
+func azure functionapp fetch-app-settings <FunctionAppName>
+```
+- Update the `connection` property in your _function.json_ file to reference the name of your app setting that contains your conenction string
+
 ### Step 3 - Using the Azure Face API
 
 Now that we have the image as an input stream within our function, we want to send it to the Azure Face API to detect any faces within the image. You can do so by [following this tutorial](https://docs.microsoft.com/en-gb/azure/cognitive-services/face/quickstarts/client-libraries?tabs=visual-studio&pivots=programming-language-python), with a couple of changes:
