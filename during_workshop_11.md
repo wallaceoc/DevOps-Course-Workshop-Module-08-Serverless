@@ -19,13 +19,14 @@ In the same folder as above:
  - Login to the Azure CLI: `az login`
  - Create a _Resource Group_ in Azure, this is a container for related resources.
 ```
-az group create --name InitialAppResources --location ukwest
+az group create --name <RG_NAME> --location ukwest
 ```
+> `<RG_NAME>` should be replaced with a name that is unique across the whole directory.
  - Create a Web App:
  ```
- az webapp up --sku F1 --location ukwest --name <app-name> --resource-group InitialAppResources
+ az webapp up --sku F1 --location ukwest --name <APP_NAME> --resource-group <RG_NAME>
  ```
-   - `<app-name>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<app-name>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`.
+> `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`.
  - The command should return the URL that the application is now hosted on. If you navigate to that URL in your browser it should take around 5 seconds before it loads with a message.
 
 Now that we have the application running, we're going to use an online service, BlazeMeter, to perform load testing on it. With this tool we can send out a number of requests over a few minutes to see how the application performs.
@@ -167,6 +168,8 @@ Before we worry about hosting the function on Azure itself we are going to test 
 - Towards the end of the output it should give you a URL. Copy this into a browser and append the query string `?name=<YOUR_NAME>` (so the full URL looks something like `http://localhost:7071/HttpEndpoint?name=Alice`)
 - You should hopefully see a message returned from the function
 
+> You can debug an Azure function locally by using the Azure Functions extension to generate the correct launch config. [See here for details](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=python).
+
 Now that we have it running locally, we want to replace the code in the default function with something similar to the dummy code that we are using in our existing application. However, we will change it so we can send the text that we want to translate to it. Change \_\_init\_\_.py to look like the following:
 
 ``` Python
@@ -213,25 +216,19 @@ The function now expects us to send a JSON object to it containing the subtitle 
 
 Now that you've got your function working locally we're going to get it running on Azure.
 
-Before the code can be deployed we need to create three resources in Azure, using the Azure CLI:
-
-- A new  _Resource Group_:
-
-```
-az group create --name AcmeSubResources --location ukwest
-```
+Before the code can be deployed we need to create two more resources in Azure, using the Azure CLI:
 
 - A _Storage Account_: This is used to store the code for your functions, as well as to maintain state and other information about your project.
 
 ```
-az storage account create --name <STORAGE_NAME> --location ukwest --resource-group AcmeSubResources --sku Standard_LRS
+az storage account create --name <STORAGE_NAME> --location ukwest --resource-group <RG_NAME> --sku Standard_LRS
 ```
 > Replace `<STORAGE_NAME>` with the name you want to give this storage account, this must be unique across the whole of Azure Storage and contain 3 to 24 numbers or lowercase letters. It is worth making a note of this name as you will use it later.
 
 - A _Function App_: This is the container for your function code within Azure, it can be thought of the Azure equivalent to your local function project.
 
 ```
-az functionapp create --resource-group AcmeSubResources --consumption-plan-location ukwest --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
+az functionapp create --resource-group <RG_NAME> --consumption-plan-location ukwest --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
 ```
 
 > `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`.
