@@ -168,7 +168,7 @@ Before we worry about hosting the function on Azure itself we are going to test 
 - Towards the end of the output it should give you a URL. Copy this into a browser and append the query string `?name=<YOUR_NAME>` (so the full URL looks something like `http://localhost:7071/HttpEndpoint?name=Alice`)
 - You should hopefully see a message returned from the function
 
-> You can debug an Azure function locally by using the Azure Functions extension to generate the correct launch config. [See here for details](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=python).
+> You can debug an Azure function locally by using the Azure Functions extension to generate the correct launch config. If you install it, it should detect the Function when you open the project and a prompt will appear to set up initial config. [See here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs-code?tabs=python) for details of developing Functions with the extension.
 
 Now that we have it running locally, we want to replace the code in the default function with something similar to the dummy code that we are using in our existing application. However, we will change it so we can send the text that we want to translate to it. Change \_\_init\_\_.py to look like the following:
 
@@ -428,12 +428,8 @@ It is important to clean up the resources you have been using in the cloud when 
 
 In Azure you can delete a _resource group_ to delete all the resources contained within it.
 
-You can delete the two resource groups you created for Parts 1-5, and any others your created for Part 6,  [via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal#delete-resource-group), or you can run the following commands:
+You can delete the resource group you created for Parts 1-5, and any others your created for Part 6,  [via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal#delete-resource-group), or you can run the following commands:
 
 ```
-az group delete --name InitialAppResources --yes
-```
-
-```
-az group delete --name AcmeSubResources --yes
+az group delete --name <RG_NAME> --yes
 ```
