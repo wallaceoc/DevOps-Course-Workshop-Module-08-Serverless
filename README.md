@@ -6,6 +6,8 @@ During workshop 11 you'll be following the instructions in [during_workshop_11.m
 
 ## Pre-requisites
 
+You should have received an email inviting you to the "Softwire Academy" Azure directory. Please accept the invitation.
+
 You need to have an Azure account. You can create a free account [here](https://azure.microsoft.com/en-us/free/?WT.mc_id=A261C142F).
 
 Also, make sure you have installed the following:
