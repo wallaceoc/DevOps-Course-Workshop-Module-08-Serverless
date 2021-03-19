@@ -398,6 +398,8 @@ Follow [this tutorial](https://docs.microsoft.com/en-us/azure/storage/blobs/stor
 
 Create a new Python Azure Function App which contains a [Blob Storage Trigger](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-blob-trigger?tabs=python) to read in images as an input stream, when they are added to Blob Storage.
 
+Currently, Azure does not support having a Linux app and a Windows app in the same resource group so you will need a second resource group. Ask a tutor to provide one if they haven't already.
+
 As your blob storage will be in a separate resource group from your function app you cannot rely on the connection to it to be automatically populated in your function app. To allow a connection you need to do the following, once you have created the function app through the CLI:
 
 - [Get the connection string for the Azure Storage Account that contains your images.](https://docs.microsoft.com/en-us/cli/azure/storage/account?view=azure-cli-latest#az_storage_account_show_connection_string)
