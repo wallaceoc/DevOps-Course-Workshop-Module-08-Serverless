@@ -17,16 +17,11 @@ We will host this application in a non-scalable way, which we can then perform *
 
 In the same folder as above:
  - Login to the Azure CLI: `az login`
- - Create a _Resource Group_ in Azure, this is a container for related resources.
-```
-az group create --name <RG_NAME> --location ukwest
-```
-> `<RG_NAME>` should be replaced with a name that is unique across the whole directory.
  - Create a Web App:
  ```
- az webapp up --sku F1 --location ukwest --name <APP_NAME> --resource-group <RG_NAME>
+ az webapp up --sku B1 --location ukwest --name <APP_NAME> --resource-group <RG_NAME>
  ```
-> `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`.
+> `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`. The tutors should provide you with a resource group to contain your resources for this workshop. Replace `<RG_NAME>` with the name of your assigned resource group.
  - The command should return the URL that the application is now hosted on. If you navigate to that URL in your browser it should take around 5 seconds before it loads with a message.
 
 Now that we have the application running, we're going to use an online service, BlazeMeter, to perform load testing on it. With this tool we can send out a number of requests over a few minutes to see how the application performs.
@@ -75,6 +70,7 @@ To try and solve the problems that the application experiences under load we are
 ### Step 1 - Running Locally
 
 The first thing to do is to create a local function project. In Azure Functions, a function project is a container for one or more individual functions. To do this we will use Azure Functions Core Tools, that you installed in the prerequisites to this workshop.
+Run the following command from the root of this repository, not inside `initialApp/`.
 
 ```
 func init AcmeSubProject --python
@@ -165,6 +161,7 @@ Before we worry about hosting the function on Azure itself we are going to test 
 
 - Make sure you're in the root directory of the local function project (`AcmeSubProject`)
 - Run command:  `func start`
+> Note that the Azure Functions tools are only compatible with the 64-bit version of Python. If you see this error `ImportError: cannot import name 'cygrpc'`, you are using a 32-bit version.
 - Towards the end of the output it should give you a URL. Copy this into a browser and append the query string `?name=<YOUR_NAME>` (so the full URL looks something like `http://localhost:7071/HttpEndpoint?name=Alice`)
 - You should hopefully see a message returned from the function
 
@@ -231,7 +228,7 @@ az storage account create --name <STORAGE_NAME> --location ukwest --resource-gro
 az functionapp create --resource-group <RG_NAME> --consumption-plan-location ukwest --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
 ```
 
-> `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`.
+> `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`. It must also differ from the app name you used in Part 1. If you get a "usage error", check you are not in a directory that already contains a `.azure/config` file.
 
 Now that we have all the resources that we need, we can deploy to Azure.
 
@@ -401,7 +398,7 @@ Follow [this tutorial](https://docs.microsoft.com/en-us/azure/storage/blobs/stor
 
 Create a new Python Azure Function App which contains a [Blob Storage Trigger](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-blob-trigger?tabs=python) to read in images as an input stream, when they are added to Blob Storage.
 
-Currently, Azure does not support having a Linux app and a Windows app in the same resource group so you will have to create a new resource group for your new function app. 
+Currently, Azure does not support having a Linux app and a Windows app in the same resource group so you will need a second resource group. Ask a tutor to provide one if they haven't already.
 
 As your blob storage will be in a separate resource group from your function app you cannot rely on the connection to it to be automatically populated in your function app. To allow a connection you need to do the following, once you have created the function app through the CLI:
 
