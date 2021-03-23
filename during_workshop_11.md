@@ -19,7 +19,7 @@ In the same folder as above:
  - Login to the Azure CLI: `az login`
  - Create a Web App:
  ```
- az webapp up --sku B1 --location ukwest --name <APP_NAME> --resource-group <RG_NAME>
+ az webapp up --sku B1 --location uksouth --name <APP_NAME> --resource-group <RG_NAME>
  ```
 > `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`. The tutors should provide you with a resource group to contain your resources for this workshop. Replace `<RG_NAME>` with the name of your assigned resource group.
  - The command should return the URL that the application is now hosted on. If you navigate to that URL in your browser it should take around 5 seconds before it loads with a message.
@@ -218,14 +218,14 @@ Before the code can be deployed we need to create two more resources in Azure, u
 - A _Storage Account_: This is used to store the code for your functions, as well as to maintain state and other information about your project.
 
 ```
-az storage account create --name <STORAGE_NAME> --location ukwest --resource-group <RG_NAME> --sku Standard_LRS
+az storage account create --name <STORAGE_NAME> --location uksouth --resource-group <RG_NAME> --sku Standard_LRS
 ```
 > Replace `<STORAGE_NAME>` with the name you want to give this storage account, this must be unique across the whole of Azure Storage and contain 3 to 24 numbers or lowercase letters. It is worth making a note of this name as you will use it later.
 
 - A _Function App_: This is the container for your function code within Azure, it can be thought of the Azure equivalent to your local function project.
 
 ```
-az functionapp create --resource-group <RG_NAME> --consumption-plan-location ukwest --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
+az functionapp create --resource-group <RG_NAME> --consumption-plan-location uksouth --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
 ```
 
 > `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`. It must also differ from the app name you used in Part 1. If you get a "usage error", check you are not in a directory that already contains a `.azure/config` file.
