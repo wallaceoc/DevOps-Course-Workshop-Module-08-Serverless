@@ -10,7 +10,7 @@ First of all we will investigate how well an application behaves under load when
 
   1. Navigate to the application's folder: `cd ./initialApp/` 
   2. Install requirements: `pip install -r requirements.txt`
-  3. Run the app: `python -m flask run`
+  3. Run the app: `flask run`
 
 We will host this application in a non-scalable way, which we can then perform *load testing* against.
 > The ideal demonstration of an outdated, non-scalable deployment would be via VMs, but these cost money, so for the purposes of this exercise we'll be using Azure App Service with scalability turned off, as this is available on the free service plan.
