@@ -210,6 +210,8 @@ The function now expects us to send a JSON object to it containing the subtitle 
 
 ### Step 2 - Hosting on Azure
 
+> _**Please delete your app service and app service plan from Part 1 before following these instructions (if you don't you may see an error about conflicting service plans when running `az functionapp create below`)**_
+
 Now that you've got your function working locally we're going to get it running on Azure.
 
 Before the code can be deployed we need to create two more resources in Azure, using the Azure CLI:
