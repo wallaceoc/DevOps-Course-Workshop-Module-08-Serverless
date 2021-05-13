@@ -28,7 +28,7 @@ Now that we have the application running, we're going to use an online service, 
 
   1. [Sign up for an account on the free tier of BlazeMeter](https://www.blazemeter.com/pricing/)
   2.  Create a new performance test by clicking 'Create Test' and then 'Performance Test':
-./images/BlazeMeter/BlazeMeter-CreateTest.png)
+![Create Test Image](./images/BlazeMeter/BlazeMeter-CreateTest.png)
 
   3. Choose 'Enter Url/API Call`
 
