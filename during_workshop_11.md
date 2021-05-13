@@ -28,16 +28,15 @@ Now that we have the application running, we're going to use an online service, 
 
   1. [Sign up for an account on the free tier of BlazeMeter](https://www.blazemeter.com/pricing/)
   2.  Create a new performance test by clicking 'Create Test' and then 'Performance Test':
-
-  ![Create Test](/images/BlazeMeter/BlazeMeter-CreateTest.png)
+./images/BlazeMeter/BlazeMeter-CreateTest.png)
 
   3. Choose 'Enter Url/API Call`
 
-  ![Enter URL](/images/BlazeMeter/BlazeMeter-EnterUrl.png)
+  ![Enter URL](./images/BlazeMeter/BlazeMeter-EnterUrl.png)
 
   4. Give the request any name you want, and then in the URL enter the URL of your application e.g. `http://abc-01-01-1900-load-testing.azurewebsites.net`
 
-  ![URL For Request](/images/BlazeMeter/BlazeMeter-UrlEntered.png)
+  ![URL For Request](./images/BlazeMeter/BlazeMeter-UrlEntered.png)
 
   5. Under 'Load Configuration' we can then set how many users will be used in this performance testing (i.e. how many clients will be requesting from the API simultaneously), how long the load test lasts for and how quickly users are added. We want to show how increasing the number of users affects the response time, so choose the following settings:
     - Total Users: 50
@@ -45,11 +44,11 @@ Now that we have the application running, we're going to use an online service, 
     - Ramp up Time: 4 minutes
     - Ramp up Steps: 10
 
-  ![Load Configuration](/images/BlazeMeter/BlazeMeter-LoadConfiguration.png) 
+  ![Load Configuration](./images/BlazeMeter/BlazeMeter-LoadConfiguration.png) 
 
   6. The 'Load Distribution' lets you set where the requests will originate from. This doesn't matter too much to us, so just select one that is in the UK, as that is where our application is hosted.
 
-  ![Load Distribution](/images/BlazeMeter/BlazeMeter-LoadDistribution.png) 
+  ![Load Distribution](./images/BlazeMeter/BlazeMeter-LoadDistribution.png) 
 
   7. Hit 'Run Test' on the left-hand side.
 
@@ -61,7 +60,7 @@ When the test has ended you should hopefully see an average response time which 
 
 If you go to the 'Timeline Report' tab you can select to see the average response time plotted against the number of users in the test. This should show that the response time got progressively worse as more users were added. Even when the users start to decrease the response time is still high as there is a backlog of requests that the server has to deal with.
 
-![Response Time](/images/BlazeMeter/BlazeMeter-ResponseTimeGraph.png) 
+![Response Time](./images/BlazeMeter/BlazeMeter-ResponseTimeGraph.png) 
 
 ## Part 2 - Azure Functions
 
@@ -207,7 +206,7 @@ The function now expects us to send a JSON object to it containing the subtitle 
 - Hit 'Send'
 
 
-![Postman](/images/Postman-SendRequest.png) 
+![Postman](./images/Postman-SendRequest.png) 
 
 ### Step 2 - Hosting on Azure
 
