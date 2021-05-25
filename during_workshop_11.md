@@ -353,7 +353,7 @@ Next we want to add a new function to your function project that reads messages 
 1. [Create a new function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#create-func) that uses a [Queue Storage trigger](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue-trigger?tabs=python). Make sure to set the binding to look at the correct queue by changing _function.json_ for the new function.
 2. For now you can print the contents of the message received to the logs.
 
-If you run your function project locally you should be able to see in the logs your queue items being processed by this new function, once you have sent a request to your HTTP endpoint function.
+Run your function project locally by running `func start` from the AcmeSubProject folder, not the individual function. It will start both. You should be able to see in the logs your queue items being processed by this new function, once you have sent a request to your HTTP endpoint function.
 
 If you have a look at the queue in the Azure Portal, you should see that the queue has now been cleared, as the items have been processed.
 
