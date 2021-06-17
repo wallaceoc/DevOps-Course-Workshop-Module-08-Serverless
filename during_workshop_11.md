@@ -426,10 +426,4 @@ Now that we have the image as an input stream within our function, we want to se
 
 It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
 
-In Azure you can delete a _resource group_ to delete all the resources contained within it.
-
-You can delete the resource group you created for Parts 1-5, and any others your created for Part 6,  [via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group?tabs=azure-portal#delete-resource-group), or you can run the following commands:
-
-```
-az group delete --name <RG_NAME> --yes
-```
+You can delete the resources you created for Parts 1-5, and any resource group created for Part 6, via the portal - navigate to your resource group and delete each resource via its corresponding `...` options menu or follow the [Azure guide to deleting resources via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resources-portal#delete-resources).
