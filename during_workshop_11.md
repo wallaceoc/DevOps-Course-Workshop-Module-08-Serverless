@@ -210,6 +210,10 @@ The function now expects us to send a JSON object to it containing the subtitle 
 
 ![Postman](./images/Postman-SendRequest.png) 
 
+Take a moment to customise the "httpTrigger" binding a little.
+- We don't want to accept GET requests, so remove that from the list of accepted methods in `function.json`.
+- Rename the binding from "req" to "request". This means updating the "name" property for that binding in `function.json` as well as the corresponding function parameter in `__init__.py`. Each binding in `function.json` needs a corresponding parameter in the `main` function in `__init__.py`, except one output binding can use `main`'s return value instead, if it has name equal to "$return".
+ 
 ### Step 2 - Hosting on Azure
 
 > _**Please delete your app service and app service plan from Part 1 before following these instructions (if you don't you may see an error about conflicting service plans when running `az functionapp create below`)**_
@@ -424,6 +428,6 @@ Now that we have the image as an input stream within our function, we want to se
 
 # At The End Of The Workshop
 
-It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
+It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure we're not having to unnecessarily pay for them.
 
 You can delete the resources you created for Parts 1-5, and any resource group created for Part 6, via the portal - navigate to your resource group and delete each resource via its corresponding `...` options menu or follow the [Azure guide to deleting resources via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resources-portal#delete-resources).
