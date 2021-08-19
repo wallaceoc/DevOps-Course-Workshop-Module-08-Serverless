@@ -163,6 +163,7 @@ Before we worry about hosting the function on Azure itself we are going to test 
 - Make sure you're in the root directory of the local function project (`AcmeSubProject`)
 - Run command:  `func start`
 > Note that the Azure Functions tools are only compatible with the 64-bit version of Python. If you see this error `ImportError: cannot import name 'cygrpc'`, you are using a 32-bit version.
+> If you face an issue with `func start` hanging, try running `func start --verbose` for more info. You may find removing the `extensionBundle` section of your `host.json` file fixes it. 
 - Towards the end of the output it should give you a URL. Copy this into a browser and append the query string `?name=<YOUR_NAME>` (so the full URL looks something like `http://localhost:7071/HttpEndpoint?name=Alice`)
 - You should hopefully see a message returned from the function
 
