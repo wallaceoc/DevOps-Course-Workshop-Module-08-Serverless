@@ -23,7 +23,7 @@ In the same folder as above:
  ```
  az webapp up --sku B1 --location uksouth --name <APP_NAME> --resource-group <RG_NAME>
  ```
-> `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`. The tutors should provide you with a resource group to contain your resources for this workshop. Replace `<RG_NAME>` with the name of your assigned resource group.
+> `<APP_NAME>` should be replaced with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-load-testing`. The tutors should provide you with a resource group to contain your resources for this workshop. Replace `<RG_NAME>` with the name of your resource group ending "\_Workshop".
  - The command should return the URL that the application is now hosted on. If you navigate to that URL in your browser it should take around 5 seconds before it loads with a message.
 
 Now that we have the application running, we're going to use an online service, BlazeMeter, to perform load testing on it. With this tool we can send out a number of requests over a few minutes to see how the application performs.
@@ -210,6 +210,10 @@ The function now expects us to send a JSON object to it containing the subtitle 
 
 ![Postman](./images/Postman-SendRequest.png) 
 
+Take a moment to customise the "httpTrigger" binding a little.
+- We don't want to accept GET requests, so remove that from the list of accepted methods in `function.json`.
+- Rename the binding from "req" to "request". This means updating the "name" property for that binding in `function.json` as well as the corresponding function parameter in `__init__.py`. Each binding in `function.json` needs a corresponding parameter in the `main` function in `__init__.py`, except one output binding can use `main`'s return value instead, if it has name equal to "$return".
+ 
 ### Step 2 - Hosting on Azure
 
 > _**Please delete your app service and app service plan from Part 1 before following these instructions (if you don't you may see an error about conflicting service plans when running `az functionapp create below`)**_
@@ -242,7 +246,7 @@ func azure functionapp publish <APP_NAME>
 
 As when running locally, the command should output a URL. You can use this URL in Postman to send a request to the function (don't forget to send the JSON object, as before!).
 
-Now that you have your Azure Function setup, you can have a look at the resources you have created in the Azure Portal, by logging into https://portal.azure.com/ and selecting 'All Resources' from the menu in the top left corner.
+Now that you have your Azure Function setup, you can have a look at the resources you have created in the Azure Portal by selecting your resource group.
 
 ### Step 3 - Load testing Azure Function
 
@@ -289,7 +293,9 @@ We now want to change our function so it saves the subtitle to the Azure Storage
 It is worth checking out the [Table Storage output binding documentation](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-bindings-storage-table-output?tabs=python) to help you achieve this task.
 
 > As you are using the same Storage Account for your Azure Table Storage and for your Azure Functions App you do not need to set the `connection` property for the binding in _function.json_ as it will default to use the correct connection. 
-To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to make sure the local instance knows about the correct connection details.
+
+Run the function locally with `func start` before trying to publish it. This way you get faster feedback and can see error messages in your terminal. Once you are happy it works you can publish it.
+> To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to make sure the local instance knows about the correct connection details.
 
 You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
@@ -424,6 +430,6 @@ Now that we have the image as an input stream within our function, we want to se
 
 # At The End Of The Workshop
 
-It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure you're not having to unnecessarily pay for them.
+It is important to clean up the resources you have been using in the cloud when you have finished using them, to ensure we're not having to unnecessarily pay for them.
 
 You can delete the resources you created for Parts 1-5, and any resource group created for Part 6, via the portal - navigate to your resource group and delete each resource via its corresponding `...` options menu or follow the [Azure guide to deleting resources via the portal](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resources-portal#delete-resources).
