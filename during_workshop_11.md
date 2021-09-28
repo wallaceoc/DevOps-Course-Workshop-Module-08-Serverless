@@ -71,7 +71,7 @@ To try and solve the problems that the application experiences under load we are
 ### Step 1 - Running Locally
 
 The first thing to do is to create a local function project. In Azure Functions, a function project is a container for one or more individual functions. To do this we will use Azure Functions Core Tools, that you installed in the prerequisites to this workshop.
-Run the following command from the root of this repository, not inside `initialApp/`.
+Run the following command from **the root of this repository, not inside `initialApp/`.**
 
 ```
 func init AcmeSubProject --python
@@ -237,7 +237,7 @@ az storage account create --name <STORAGE_NAME> --location uksouth --resource-gr
 az functionapp create --resource-group <RG_NAME> --consumption-plan-location uksouth --runtime python --runtime-version 3.8 --functions-version 3 --name <APP_NAME> --storage-account <STORAGE_NAME> --os-type linux
 ```
 
-> `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`. It must also differ from the app name you used in Part 1. If you get a "usage error", check you are not in a directory that already contains a `.azure/config` file.
+> `<STORAGE_NAME>` should be the name of the Storage Account you just created. Replace `<APP_NAME>` with a name that is unique across all of Azure (as this application will be hosted at `<APP_NAME>.azurewebsites.net`). For example you could use your initials plus today's date e.g. `abc-01-01-1900-functions`. It must also differ from the app name you used in Part 1. If you get a "usage error", check that the directory you are in (or any parent directory) doesn't already contain a `.azure/config` file.
 
 Now that we have all the resources that we need, we can deploy to Azure.
 
