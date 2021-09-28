@@ -217,7 +217,8 @@ Take a moment to customise the "httpTrigger" binding a little.
  
 ### Step 2 - Hosting on Azure
 
-> _**Please delete your app service and app service plan from Part 1 before following these instructions (if you don't you may see an error about conflicting service plans when running `az functionapp create below`)**_
+> _**Please delete your app service and app service plan from Part 1 before following these instructions. If you don't, you may see an error when running `az functionapp create` below)**_
+> [Microsoft's explanation is here](https://github.com/Azure/Azure-Functions/wiki/Creating-Function-Apps-in-an-existing-Resource-Group)
 
 Now that you've got your function working locally we're going to get it running on Azure.
 
