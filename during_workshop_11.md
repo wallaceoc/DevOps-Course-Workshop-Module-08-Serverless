@@ -296,8 +296,9 @@ It is worth checking out the [Table Storage output binding documentation](https:
 
 > As you are using the same Storage Account for your Azure Table Storage and for your Azure Functions App you do not need to set the `connection` property for the binding in _function.json_ as it will default to use the correct connection. 
 
+To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to provide your local instance with the correct connection details.
+
 Run the function locally with `func start` before trying to publish it. This way you get faster feedback and can see error messages in your terminal. Once you are happy it works you can publish it.
-> To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to make sure the local instance knows about the correct connection details.
 
 You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
