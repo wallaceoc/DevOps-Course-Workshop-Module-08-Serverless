@@ -2,7 +2,7 @@
 
 This repository is for learners on Corndel's DevOps apprenticeship.
 
-During workshop 11 you'll be following the instructions in [during_workshop_11.md](during_workshop_11.md).
+During workshop 11 you'll be following the instructions in [during_workshop_11.md](during_workshop_11.md) - unless your trainer has advised to instead follow the [alternative_workshop_11.md](alternative_workshop_11.md) exercise.
 
 ## Pre-requisites
 
@@ -15,6 +15,7 @@ Also, make sure you have installed the following:
 * [Visual Studio Code](https://code.visualstudio.com/download)
 * [Git](https://git-scm.com/)
 * [Azure Functions Core Tools version 3.x.](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-run-local#v2)
+  * The Function Tools are not required if you are following the alternative exercise
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)
   * Version 3.6 or up; check this by running `python --version`
