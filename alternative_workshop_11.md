@@ -19,6 +19,7 @@ We will host this application in a non-scalable way, which we can then perform *
 
 In the same folder as above:
  - Login to the Azure CLI: `az login`
+  - If you're using GitPod, you'll need to use `az login --use-device-code`
  - Create a Web App:
  ```
  az webapp up --sku B1 --location uksouth --name <APP_NAME> --resource-group <RG_NAME>
