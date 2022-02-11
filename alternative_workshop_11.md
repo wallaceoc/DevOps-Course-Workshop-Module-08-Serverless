@@ -254,13 +254,19 @@ We now have an app that receives the language code and accesses the subtitle fro
 
 Check that when you POST a new subtitle, it is processed and added to your new table in uppercase.
 
-## Part 5 (Stretch) - Translating using Azure Translator
+## Part 5 - Translating using Azure Translator
 
 Now that we have the architecture in place, we're going to do the actual translation, instead of calling `toUpper()`. To do so we're going to use another cloud-based service - Azure Translator.
 
 You'll find there's an [existing connector for Microsoft Translator](https://docs.microsoft.com/en-us/connectors/translatorv2/) that can translate a given string for a given language code - add it and for now leave the Subscription Key blank. Update your logic app to store the translated text in place of the uppercase text. Test that it works!
 
 Without a subscription key we're limited to a throttled connection; if we want to switch to a higher throughput then we'll need to create our own Translator service - add one to your resource group using the "Global" region, and once created update your Translator connection to use a subscription key from your new service.
+
+## Part 6 (Stretch) - Try out facial recognition
+
+Azure's cognitive services offer many other services, including a facial recognition API. We will set up a new Logic App to catch uploaded images & send them to a Face API instance and store the results.
+
+
 
 # At The End Of The Workshop
 
