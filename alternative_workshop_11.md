@@ -158,12 +158,13 @@ Separating the receipt of requests from the translations themselves has several 
 * The original app can respond quickly to users
 * A backlog of translations won't stop new requests being received
 * Retry behaviour for translations can be controlled by our apps, rather than relying on users to retry
+* The logic each component is handling is simpler
 
 It also has several potential disadvantages:
 * Often produces some extra complexity - e.g. a second logic app!
 * Users know their request has been accepted, but we need extra logic for them to find out when it's complete/what the result is
 
-By and large, it's more complex to split the stages up, but can result in a more reliable system.
+By and large, there's more initial complexity in splitting the stages up, but it can result in a more maintainable and reliable system.
 </details>
 
 To help us achieve this we are going to be using Azure Queue storage.
@@ -264,9 +265,43 @@ Without a subscription key we're limited to a throttled connection; if we want t
 
 ## Part 6 (Stretch) - Try out facial recognition
 
-Azure's cognitive services offer many other services, including a facial recognition API. We will set up a new Logic App to catch uploaded images & send them to a Face API instance and store the results.
+Azure's cognitive services offer many other services, including a facial recognition API. We will set up a new Logic App to catch uploaded images & send them to a Face API instance and we'll store the estimated ages of the subjects.
 
+You'll need to consider:
+* Where you'll store the images
+* How you'll react when a new image is uploaded
+* Where you'll store the results
 
+Think about this, and make a plan for how you might approach this. If you're feeling confident; feel free to give this a go without reading the guidance below!
+
+For storage, we can take advantage of our existing Storage Account, or create a fresh one for this application. Either way, add a new "Container" to your Storage Account; this is a good way to store "blob" data like images, audio, or custom document formats like PowerPoint, and is where we'll upload images.
+
+We'll also need to create a new Logic App that can react to images being uploaded to your Container. Add an empty trigger for now that fires when a blob is added or modified.
+
+<details><summary> Hint </summary>
+
+You may need to create a blank app to start with, and search to find less common triggers, rather than selecting from the preset options.
+</details>
+
+Next we need to configure the Face API so that we can use it; deploy a Face API instance to your resource group, and make a note of the access keys and endpoint attached to that resource.
+
+Add a new stage to your Logic App that detects faces in the uploaded image, and configure your connection settings using the details from your Face API instance.
+
+<details> <summary> Hint </summary>
+
+Your "Image URL" structure can be determined by uploading an image to the container, and checking it's URL. You can always try hardcoding the URL to that specific image to start with, and then try using the Dynamic Content to build the URL depending on the uploaded image.
+
+<details> <summary> Example Image URL structure: </summary>
+
+https://<your_storage_account_name>.blob.core.windows.net@{triggerBody()?['Path']}
+</details>
+</details>
+
+Finally, we should do something with this information! For now, we'll just store that information in our table storage. Add a new Table to your Storage Account called "FaceInformation", and update your Logic App to add an entry to that table for each face recognised including:
+* The image name
+* The estimated age of the identified subject
+
+Try out your application - upload some photos with & without people in, and see how well it handles it. Do you agree with its assessments?
 
 # At The End Of The Workshop
 
