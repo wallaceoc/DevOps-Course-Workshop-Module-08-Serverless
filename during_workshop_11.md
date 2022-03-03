@@ -306,6 +306,21 @@ You can check whether you have been successful by using the Azure Portal to see 
 
 AcmeSub need to be able to translate their subtitles into multiple different languages. One way we could architect this is to have our initial function queue up a function instance per language to do the translation. To help us achieve this we are going to be using Azure Queue storage.
 
+<details><summary>Take a moment to consider what trade-offs this design choice might have</summary>
+
+Separating the receipt of requests from the translations themselves has several advantages:
+* The original app can respond quickly to users
+* A backlog of translations won't stop new requests being received
+* Retry behaviour for translations can be controlled by our apps, rather than relying on users to retry
+* The logic each component is handling is simpler
+
+It also has several potential disadvantages:
+* Often produces some extra complexity - e.g. a second function to handle, and an intermediate queue!
+* Users know their request has been accepted, but we need extra logic for them to find out when it's complete/what the result is
+
+By and large, there's more initial complexity in splitting the stages up, but it can result in a more maintainable and reliable system.
+</details>
+
 The way we want the application to work is:
 1. Azure Function _A_ receives an HTTP Request containing the subtitle and the languages to translate the subtitle into.
 2. Function _A_ saves the subtitle to Azure Table storage
