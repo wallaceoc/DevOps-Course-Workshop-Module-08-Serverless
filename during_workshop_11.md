@@ -280,7 +280,7 @@ az storage table create --name AcmeTranslations --account-name <STORAGE_NAME>
 In the [Azure Portal](https://portal.azure.com/) you should now be able to find your created Table Storage:
 - Search for 'Storage accounts' in the top search bar
 - Select the storage account you are using for this workshop
-- Select 'Storage Explorer'
+- Select 'Storage Browser'
 - You should then be able to expand 'Tables' and select the table you just created
 - For now it should show no data
 
