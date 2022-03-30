@@ -14,7 +14,7 @@ Also, make sure you have installed the following:
 
 * [Visual Studio Code](https://code.visualstudio.com/download)
 * [Git](https://git-scm.com/)
-* [Azure Functions Core Tools version 3.x.](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-run-local#v2)
+* [Azure Functions Core Tools version 4.x.](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-run-local#v2)
   * The Function Tools are not required if you are following the alternative exercise
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)
