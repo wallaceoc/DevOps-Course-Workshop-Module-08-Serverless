@@ -1,8 +1,8 @@
-# Workshop Module 11
+# Workshop Module 9
 
 This repository is for learners on Corndel's DevOps apprenticeship.
 
-During workshop 11 you'll be following the instructions in [during_workshop_11.md](during_workshop_11.md) - unless your trainer has advised to instead follow the [alternative_workshop_11.md](alternative_workshop_11.md) exercise.
+During workshop 9 you'll be following the instructions in [during_workshop_09.md](during_workshop_09.md) - unless your trainer has advised to instead follow the [alternative_workshop_09.md](alternative_workshop_09.md) exercise.
 
 ## Pre-requisites
 
