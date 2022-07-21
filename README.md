@@ -16,6 +16,10 @@ Also, make sure you have installed the following:
 * [Git](https://git-scm.com/)
 * [Azure Functions Core Tools version 4.x.](https://docs.microsoft.com/en-gb/azure/azure-functions/functions-run-local#v2)
   * The Function Tools are not required if you are following the alternative exercise
+  * :warning: At time of writing, Azure function tools for Python works with Python 3.6-3.9 on x86(/64) only, not on ARM for M1 Macs
+    * [GitHub issue for M1 Macs](https://github.com/Azure/azure-functions-python-worker/issues/915)
+    * [GitHub issue for Python3.10](https://github.com/Azure/azure-functions-python-worker/issues/899)
+    * The workshop can also be done using [GitPod](https://gitpod.io/#https://github.com/CorndelWithSoftwire/DevOps-Course-Workshop-Module-09-Serverless)
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)
   * Version 3.6 or up; check this by running `python --version`
