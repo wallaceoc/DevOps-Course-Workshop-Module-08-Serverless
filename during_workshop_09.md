@@ -332,6 +332,8 @@ The way we want the application to work is:
 
 As you can see, our existing Azure Function acts very closely to how Function _A_ needs to behave, so we will tweak that one and then create a new function for Function _B_.
 
+![Function app diagram](./images/Architecture/FunctionAppArchitecture.png)
+
 ### Step 1 - Setup Azure Queue Storage
 
 Azure Queue Storage lets us add messages to a queue, which can then be read from elsewhere. These messages are stored in an Azure Storage account, so we can use the one we have already setup previously when creating the queue:
