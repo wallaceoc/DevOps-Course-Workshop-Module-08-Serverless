@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:0-3.9-buster
+FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/python:0-3.9-buster
 
 # Install Azure function tools
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
