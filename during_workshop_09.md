@@ -303,6 +303,8 @@ Run the function locally with `func start` before trying to publish it. This way
 
 You can check whether you have been successful by using the Azure Portal to see if your function is adding data to the Azure Table.
 
+> To use table storage you need the correct version of the [Extensions Bundle](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-register#extension-bundles). At the time of writing you will need to use version 2 of the extensions bundle (you can set the version in the `host.json` file).
+
 ## Part 4 - Communicating between functions
 
 AcmeSub need to be able to translate their subtitles into multiple different languages. One way we could architect this is to have our initial function queue up a function instance per language to do the translation. To help us achieve this we are going to be using Azure Queue storage.
