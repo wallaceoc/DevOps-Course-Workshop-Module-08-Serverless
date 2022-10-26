@@ -2,7 +2,11 @@
 
 This repository is for learners on Corndel's DevOps apprenticeship.
 
-During workshop 9 you'll be following the instructions in [during_workshop_09.md](during_workshop_09.md) - unless your trainer has advised to instead follow the [alternative_workshop_09.md](alternative_workshop_09.md) exercise.
+There are two versions of this workshop:
+* [Using Logic Apps](alternative_workshop_09.md)
+  * This is recommended if you want to focus on working with Azure (and would prefer not to code at the same time)
+* [Using Azure Functions](during_workshop_09.md)
+  * This is recommended if you are comfortable with programming in Python (and/or want a refresher with general purpose coding)
 
 ## Pre-requisites
 
