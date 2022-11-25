@@ -1,11 +1,11 @@
-# Workshop Module 9
+# Serverless Cloud Workshop
 
 This repository is for learners on Corndel's DevOps apprenticeship.
 
 There are two versions of this workshop:
-* [Using Logic Apps](alternative_workshop_09.md)
+* [Using Logic Apps](alternative_workshop.md)
   * This is recommended if you want to focus on working with Azure (and would prefer not to code at the same time)
-* [Using Azure Functions](during_workshop_09.md)
+* [Using Azure Functions](during_workshop.md)
   * This is recommended if you are comfortable with programming in Python (and/or want a refresher with general purpose coding)
 
 ## Pre-requisites
@@ -23,7 +23,7 @@ Also, make sure you have installed the following:
   * :warning: At time of writing, Azure function tools for Python works with Python 3.6-3.9 on x86(/64) only, not on ARM for M1 Macs
     * [GitHub issue for M1 Macs](https://github.com/Azure/azure-functions-python-worker/issues/915)
     * [GitHub issue for Python3.10](https://github.com/Azure/azure-functions-python-worker/issues/899)
-    * The workshop can also be done using [GitPod](https://gitpod.io/#https://github.com/CorndelWithSoftwire/DevOps-Course-Workshop-Module-09-Serverless)
+    * The workshop can also be done using [GitPod](https://gitpod.io/#https://github.com/CorndelWithSoftwire/DevOps-Course-Workshop-Module-08-Serverless)
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 * [Python](https://www.python.org/downloads/)
   * Version 3.6 or up; check this by running `python --version`
