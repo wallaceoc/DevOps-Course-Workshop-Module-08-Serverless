@@ -123,12 +123,12 @@ Within the Storage Account, we can now create a Table:
 ```
 az storage table create --name AcmeTranslations --account-name <STORAGE_NAME>
 ```
-> We will use the same Storage Account that we created previously, so replace `<STORAGE_NAME>` with the name you used in Part 2 Step 2.
+> We will use the same Storage Account that we created previously, so replace `<STORAGE_NAME>` with the name you just used.
 
 In the [Azure Portal](https://portal.azure.com/) you should now be able to find your created Table Storage:
 - Search for 'Storage accounts' in the top search bar
 - Select the storage account you are using for this workshop
-- Select 'Storage Explorer'
+- Select 'Storage Browser'
 - You should then be able to expand 'Tables' and select the table you just created
 - For now it should show no data
 
@@ -191,7 +191,7 @@ az storage queue create --name acmesub-translations-queue --account-name <STORAG
 ```
 > Where `<STORAGE_ACCOUNT_NAME>` is the name of the storage account you have setup previously.
 
-If you navigate to the _Storage Explorer_ in your Storage Account via the Azure Portal (as you did in Part 3) you should now be able to expand `QUEUES` to see your newly created queue.
+If you navigate to the _Storage Browser_ in your Storage Account via the Azure Portal (as you did in Part 3) you should now be able to expand `QUEUES` to see your newly created queue.
 
 ### Step 2 - Sending messages
 

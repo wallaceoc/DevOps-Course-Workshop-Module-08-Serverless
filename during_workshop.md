@@ -345,7 +345,7 @@ az storage queue create --name acmesub-translations-queue --account-name <STORAG
 ```
 > Where `<STORAGE_ACCOUNT_NAME>` is the name of the storage account you have setup previously.
 
-If you navigate to the _Storage Explorer_ in your Storage Account via the Azure Portal (as you did in Part 3) you should now be able to expand `QUEUES` to see your newly created queue.
+If you navigate to the _Storage Browser_ in your Storage Account via the Azure Portal (as you did in Part 3) you should now be able to expand `QUEUES` to see your newly created queue.
 
 ### Step 2 - Sending messages
 
