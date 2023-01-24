@@ -139,11 +139,20 @@ We now want to change our app so it saves the subtitle to the Azure Storage tabl
 1. Add a new "Table Storage: Insert Entity" action to your app
 2. Remove the 5 second delay from your app
 
-For the new Insert Entity step, link it to the table that you just created, and choose any connection name. The Entity you are adding will be a JSON object with the information you want to add; for now we should include the following fields:
+For the new Insert Entity step, we will first need to link it to the table that you just created. Visit your new storage account to note down:
+* The name of the storage account
+* The value of the first key listed under the "Access Keys" page
+
+Returning to the Logic App Designer, add the new step and choose a connection name, and select "Access Key" for the authentication type. Enter your access key & storage account name as noted above.
+
+The Entity itself that you are adding will be a JSON object with the information you want to add; for now we should include the following fields:
 
 - "PartitionKey" as any hard coded string, e.g. "my-key"
 - "RowKey" - we want this to be a unique value for every entry, so use the "expression" tab in the Dynamic Content pop-up to set it to the result of `guid()` to use a randomly generated id
 - "Name" - we want this to be the text that wants to be translated. Use the Dynamic Content option to grab the subtitle you stated should be received in the HTTP request
+
+The entity should look roughly like the below, with your table name.
+![Insert Entity Example](./images/LogicApp%20Insert%20Entity.PNG)
 
 > Choosing sensible Partition Keys depends on your domain - we won't worry about them here but if you're interested or using this for a production system then it's [worth reading more about them](https://docs.microsoft.com/en-us/rest/api/storageservices/designing-a-scalable-partitioning-strategy-for-azure-table-storage)
 
