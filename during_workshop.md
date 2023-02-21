@@ -299,7 +299,8 @@ It is worth checking out the [Table Storage output binding documentation](https:
 
 To run the function locally you will need to run the command `func azure functionapp fetch-app-settings <app_name>` to provide your local instance with the correct connection details.
 
-You will also need to ensure that the [Extension Bundle](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-register#extension-bundles) version in _host.json_ is set to `"version": "[2.*, 3.0.0)"`, since later versions (3.* and 4.*) are incompatible with Table Storage at the time of writing.
+__You will also need to ensure that the [Extension Bundle](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-register#extension-bundles) version in _host.json_ is set to `"version": "[2.*, 3.0.0)"`, since later versions (3.* and 4.*) are incompatible with Table Storage at the time of writing.__
+
 
 Run the function locally with `func start` before trying to publish it. This way you get faster feedback and can see error messages in your terminal. Once you are happy it works you can publish it.
 
