@@ -75,7 +75,7 @@ The first thing to do is to create a local function project. In Azure Functions,
 Run the following command from **the root of this repository, not inside `initialApp/`.**
 
 ```
-func init AcmeSubProject --python
+func init AcmeSubProject --python --model V1
 ```
 
 This will create a new folder called `AcmeSubProject`, which you will want to navigate into.
