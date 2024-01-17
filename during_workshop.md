@@ -15,7 +15,7 @@ First of all we will investigate how well an application behaves under load when
   3. Run the app: `flask run`
 
 We will host this application in a non-scalable way, which we can then perform *load testing* against.
-> The ideal demonstration of an outdated, non-scalable deployment would be via VMs, but these cost money, so for the purposes of this exercise we'll be using Azure App Service with scalability turned off, as this is available on the free service plan.
+> The ideal demonstration of an outdated, non-scalable deployment would be via VMs, but these cost money, so for the purposes of this exercise we'll be using Azure App Service with scalability turned off, as this is available on the Basic tier service plan.
 
 In the same folder as above:
  - Login to the Azure CLI: `az login`
