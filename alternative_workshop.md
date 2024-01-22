@@ -81,9 +81,9 @@ Use the sample payload below to generate the relevant schema:
     "subtitle": "It was a bright cold day in April, and the clocks were striking thirteen."
 }
 ```
-Add a "Delay" action to run after the trigger has fired, which waits 5 seconds, and then save your Logic App. Test your trigger, both directly through the Azure Portal (the "Run Trigger" button) and through Postman; you can find the HTTP address exposed by clicking on the HTTP trigger after saving your app.
+Add a "Delay" action to run after the trigger has fired, which waits 5 seconds, and then save your Logic App. Test your trigger, both directly through the Azure Portal (the "Run Trigger" button) and through Thunder Client; you can find the HTTP address exposed by clicking on the HTTP trigger after saving your app.
 
-![Postman](./images/Postman-SendRequestLogicApps.png)
+![Thunder Client](./images/Thunder-Client-SendRequestLogicApps.png)
 
 Did you notice anything odd?
 

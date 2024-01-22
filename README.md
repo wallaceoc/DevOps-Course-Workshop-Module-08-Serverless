@@ -26,4 +26,4 @@ Also, make sure you have installed the following:
     * [GitHub issue for M1 Macs](https://github.com/Azure/azure-functions-python-worker/issues/915)
     * The workshop can also be done using [GitPod](https://gitpod.io/#https://github.com/CorndelWithSoftwire/DevOps-Course-Workshop-Module-08-Serverless)
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-* [Postman](https://www.postman.com/downloads/)
+* [Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)
