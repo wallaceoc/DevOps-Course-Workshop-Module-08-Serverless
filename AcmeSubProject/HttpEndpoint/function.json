@@ -20,7 +20,7 @@
       "direction": "out",
       "name": "translation",
       "tableName": "AcmeTranslations",
-      "partitionKey": "tranlsation"
+      "partitionKey": "translation"
     },
     {
       "type": "queue",

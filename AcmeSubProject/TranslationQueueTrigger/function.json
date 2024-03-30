@@ -8,10 +8,10 @@
       "queueName": "acmesub-translations-queue"
     },
     {
-      "name": "tranlationTable",
+      "name": "translationTable",
       "type": "table",
       "tableName": "AcmeTranslations",
-      "partitionKey": "tranlsation",
+      "partitionKey": "translation",
       "rowKey": "{rowKey}",
       "direction": "in"
     }
